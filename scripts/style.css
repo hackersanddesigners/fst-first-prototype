@@ -1,0 +1,177 @@
+*, body{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@font-face {
+    font-family: 'GT Sectra';
+    src: url('../fonts/GT-Sectra-Book.otf') format('opentype'),
+         url('../fonts/GT-Sectra-Book.otf') format('truetype'),
+         url('../fonts/GT-Sectra-Book.woff') format('woff'),
+         url('../fonts/GT-Sectra-Book.eot');
+    font-style: normal;
+}
+
+/*@font-face {
+    font-family: 'GT Sectra';
+    src: url('../fonts/GT-Sectra-Book-Italic.otf') format('opentype'),
+         url('../fonts/GT-Sectra-Book-Italic.otf') format('truetype'),
+         url('../fonts/GT-Sectra-Book-Italic.woff') format('woff'),
+         url('../fonts/GT-Sectra-Book-Italic.eot');
+    font-style: italic, oblique;
+    font-weight:
+}*/
+
+.sans{
+  font-family: Arial, sans-serif;
+  font-style: normal;
+}
+
+.serif{
+  font-family: 'GT Sectra', sans-serif;
+  font-style: normal;
+}
+
+
+/* SIDEBARS ------------------------------------------------------------------*/
+
+.sidebar{
+  position: absolute;
+  height: 100vh;
+  width: 20px;
+}
+.sidebar-left{
+  left: 0;
+  background-color: #51B151;
+}
+.sidebar-right{
+  right: 0;
+  background-color: #716995;
+}
+
+
+/* MENU  ---------------------------------------------------------------------*/
+
+#menu-butt{
+  top: 20px;
+  right: 45px;
+  position: absolute;
+  font-size: 26px;
+}
+#menu-butt:hover{
+  cursor: pointer;
+  -moz-transform: scaleX(-1);    /* Gecko */
+  -o-transform: scaleX(-1);      /* Opera */
+  -webkit-transform: scaleX(-1); /* Webkit */
+  transform: scaleX(-1);         /* Standard */
+  filter: FlipH;
+}
+#menu-close{
+  top: 20px;
+  right: 45px;
+  position: absolute;
+  font-size: 26px;
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  filter: FlipH;
+}
+#menu-close:hover{
+  cursor: pointer;
+  -moz-transform: scaleX(1);
+  -o-transform: scaleX(1);
+  -webkit-transform: scaleX(1);
+  transform: scaleX(1);
+  filter: FlipH;
+}
+.menu{
+  height: 100vh;
+  width: 100vw;
+  background-color: #CCCCCC;
+  z-index: 100;
+  text-align: center;
+  position: fixed;
+  font-size: 6vw;
+  display: none;
+}
+.menu ol li a{
+  display: inline-block;
+  border-bottom: 20px solid #FFFFFF;
+  /*box-shadow: inset 0 0px 0 white, inset 0 -1px 0 black*/
+  margin-bottom: 10px;
+}
+.menu ol li a:hover{
+  border-bottom: 20px solid #CCCCCC;
+  cursor: pointer;
+}
+.menu ol{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.menu ol br{
+  height: 10px;
+}
+
+/* PURPLE INFO ---------------------------------------------------------------*/
+
+.purple{
+  width: 100vw;
+  height: 100vh;
+  padding: 30px 50px;
+  overflow: scroll;
+  position: fixed;
+  background-color: #716995;
+}
+.info-container{
+  width: 70vw;
+}
+.info-title{
+  font-size: 90px;
+}
+.info-text{
+  font-size: 50px;
+}
+
+/* SEARCH AREA ---------------------------------------------------------------*/
+
+.search-section{
+  position: absolute;
+  top: 30vh;
+  width: 100vw;
+  padding: 0 60px;
+}
+.title-text{
+  text-align: center;
+}
+.title-text-main{
+  font-size: 60px;
+  line-height: 60px;
+  letter-spacing: -2px;
+}
+.title-text-main span{
+  font-size: 30px;
+  letter-spacing: -1px;
+}
+.title-text-underline{
+  border-bottom: 2px solid #000;
+}
+
+.search-bar-container{
+  margin-top: 60px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+input{
+
+}
+.search-bar{
+  border-bottom: 1px solid #000;
+  border-left: 1px solid #000;
+  border-right: 1px solid #000;
+  height: 44px;
+  width: 450px;
+}
