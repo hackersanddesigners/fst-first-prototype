@@ -69,6 +69,9 @@ body{
   font-size: 1.5em;
   padding: 20px 100px 20px 20px;
 }
+.sidebar-text p:not(:first-child){
+  text-indent: 0.7em;
+}
 .sidebar-comments-container{
   height: 300px;
   width: 100%;
