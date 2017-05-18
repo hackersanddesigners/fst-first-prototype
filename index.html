@@ -11,27 +11,24 @@
 </head>
 <body>
 
+  <!-- MENU  =============================================================== -->
 
-
-  <div class="sidebar sidebar-left"></div>
-  <div class="sidebar sidebar-right"></div>
-
-  <div class="search-section">
-
-    <div class="title-text serif">
-      <p class="title-text-main">Why are the authors of the books I read so white, so male, so eurocentric? <span>&ndash;</span> <span class="title-text-underline">Feminist Search Tool</span></p>
-    </div>
-
-    <form class="search-bar-container" action=" ">
-      <input class="search-bar" type="text" name="searchf"></br>
-      <input type="submit" value="Search">
-    </form>
-
+  <div class="menu sans">
+    <div id="menu-close" class="sans"><p>Menu</p></div>
+    <ol>
+      <li><a class="menu-select" id="menu-search"  value="0">Search</a></li>
+      <li><a class="menu-select" id="menu-about"   value="about">About the Feminist Search Tool</a></li>
+      <li><a class="menu-select" id="menu-catalog" value="catalog">The Catalog of the University of Utrecht</a></li>
+      <li><a class="menu-select" id="menu-contact" value="contact">Contact</a></li>
+    </ol>
   </div>
+
+  <div class="menu-butt sans"><p>Menu</p></div>
 
   <!-- PURPLE PAGES ======================================================== -->
 
   <div id="info-catalog" class="purple">
+    <div class="menu-butt sans"><p>Menu</p></div>
     <div class="info-container sans">
       <p class="info-title">The Catalog of the UU</p>
         </br>
@@ -51,6 +48,7 @@
   </div>
 
   <div id="info-about" class="purple">
+    <div class="menu-butt sans"><p>Menu</p></div>
     <div class="info-container sans">
       <p class="info-title">About the Feminist Search Tool</p>
         </br>
@@ -62,6 +60,7 @@
   </div>
 
   <div id="info-contact" class="purple">
+    <div class="menu-butt sans"><p>Menu</p></div>
     <div class="info-container sans">
       <p class="info-title">Contact</p>
         </br>
@@ -73,18 +72,68 @@
     </div>
   </div>
 
-  <!-- MENU  =============================================================== -->
+  <!-- SIDEBAR   =========================================================== -->
 
-  <div id="menu-butt" class="sans"><p>Menu</p></div>
+  <div class="sidebar sidebar-left" >
+    <div class="sidebar-close"></div>
+    <div class="sidebar-text serif">
+      <p>Search question related to <span>country of publishing</span>:</p>
+        </br>
+      <p>&emsp;&emsp;This search question looks at the Marc 21 field 041. It shall contain all entries that both contain the indicator 1 and subfield code h, as attempt to identitify what the original languages are from translated works.</p>
+      <p>&emsp;&emsp;The challenge with this approach is imus velis pra non et ehendit officab ilitas et id eaquuntios dempore consectam fuga. Nem rem et et, utae sunt facesci ducillor rest a quam a volor aut velendunt quodist id ut moluptu saestibeati ut ad ut et labo. Hendandam ium sit maxim ium que nobisites dolore nectur milla comnitem aut es pe voloreptatur asi aligni cone et magnatectur mo essendam am, odit autem repeliqui</p>
+    </div>
+    <div class="sidebar-comments-container"></div>
 
-  <div class="menu sans">
-    <div id="menu-close" class="sans"><p>Menu</p></div>
-    <ol>
-      <li><a class="menu-select" id="menu-search"  data="search">Search</a></li>
-      <li><a class="menu-select" id="menu-about"   data="about">About the Feminist Search Tool</a></li>
-      <li><a class="menu-select" id="menu-catalog" data="catalog">The Catalog of the University of Utrecht</a></li>
-      <li><a class="menu-select" id="menu-contact" data="contact">Contact</a></li>
-    </ol>
+  </div>
+
+  <div class="sidebar sidebar-right"> </div>
+
+  <!-- SEARCH  ============================================================= -->
+
+  <div class="search-container">
+
+    <div class="search-input-section">
+
+      <div class="title-text serif">
+        <p class="title-text-main">Why are the authors of the books I read so white, so male, so eurocentric? <span>&ndash;</span> <span class="title-text-underline">Feminist Search Tool</span></p>
+      </div>
+
+      <form class="search-bar-container" action=" ">
+        <input class="search-bar" type="text" name="searchf"></br>
+        <input class="serif" type="submit" value="Search">
+      </form>
+
+    </div>
+
+    <div class="terms sans">Terms &amp; Condition: DiscoverySearch ...Gentoblauditatem aruptatet rerumet qua el in e o experum fugitatur? Qui non eosapit, totat lignatis sam, quis eatur? Litium adis etur? Pa conseri ande em. Poreius repediciis necullupid eosseque laut as ut alias ati re is dolupta tin a voluptatur autatur, ute ma et ent velitat ipsunte pero beaquo , to molorib uscimu i cum que sant.</div>
+
+    <div class="results-container">
+
+      <div class="results-title serif"><p>Results:</p></div>
+
+        </br>
+
+      <div class="results-records serif">
+        <p><span class="sans results-answer">1234</span> records found for: <span class="sans results-subject">"Childhood"</span></p>
+      </div>
+
+        </br>
+
+      <div class="results-answer-box serif">
+        <p>Of which:</p>
+        <p>Search question related to <span class="result-topic">language</span></p>
+          </br>
+        <div class="sans">
+          <p>75% in EN</p>
+          <p>12% in N</p>
+          <p>15% in D</p>
+          <p>11% in F</p>
+          <p>...</p>
+        </div>
+      </div>
+
+    </div>
+
   </div>
 
 </body>

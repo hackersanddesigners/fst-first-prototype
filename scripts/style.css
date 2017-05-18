@@ -3,6 +3,10 @@
   padding: 0;
   box-sizing: border-box;
 }
+body{
+  font-size: 30px;
+  /*background-color: #FFFD38;*/
+}
 
 @font-face {
     font-family: 'GT Sectra';
@@ -31,35 +35,56 @@
 .serif{
   font-family: 'GT Sectra', sans-serif;
   font-style: normal;
+  letter-spacing: -0.05em;
 }
 
 
 /* SIDEBARS ------------------------------------------------------------------*/
 
 .sidebar{
-  position: absolute;
-  height: 100vh;
+  position: fixed;
+  height: 100%;
   width: 20px;
+  overflow: scroll;
 }
 .sidebar-left{
   left: 0;
   background-color: #51B151;
+  width: 600px;
 }
 .sidebar-right{
   right: 0;
   background-color: #716995;
 }
+.sidebar-close{
+  background: url(../assets/x.svg);
+  height: 40px;
+  width: 40px;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  cursor: pointer;
+}
+.sidebar-text{
+  font-size: 1.5em;
+  padding: 20px 100px 20px 20px;
+}
+.sidebar-comments-container{
+  height: 300px;
+  width: 100%;
+  background-color: #CCCCCC;
+}
 
 
 /* MENU  ---------------------------------------------------------------------*/
 
-#menu-butt{
+.menu-butt{
   top: 20px;
   right: 45px;
   position: absolute;
-  font-size: 26px;
+  font-size: 1em;
 }
-#menu-butt:hover{
+.menu-butt:hover{
   cursor: pointer;
   -moz-transform: scaleX(-1);    /* Gecko */
   -o-transform: scaleX(-1);      /* Opera */
@@ -71,7 +96,7 @@
   top: 20px;
   right: 45px;
   position: absolute;
-  font-size: 26px;
+  font-size: 1em;
   -moz-transform: scaleX(-1);
   -o-transform: scaleX(-1);
   -webkit-transform: scaleX(-1);
@@ -93,21 +118,21 @@
   z-index: 100;
   text-align: center;
   position: fixed;
-  font-size: 6vw;
   display: none;
 }
 .menu ol li a{
   display: inline-block;
-  border-bottom: 20px solid #FFFFFF;
-  /*box-shadow: inset 0 0px 0 white, inset 0 -1px 0 black*/
+  box-shadow: inset 0 -16px 0 #fff;
   margin-bottom: 10px;
+  font-size: 3em;
+  text-align: center;
 }
 .menu ol li a:hover{
-  border-bottom: 20px solid #CCCCCC;
+  box-shadow: inset 0 0 0 #fff;
   cursor: pointer;
 }
 .menu ol{
-  position: absolute;
+  position: relative;
   top: 50%;
   transform: translateY(-50%);
 }
@@ -124,23 +149,31 @@
   overflow: scroll;
   position: fixed;
   background-color: #716995;
+
+  display: none;
+  z-index: 1000;
 }
 .info-container{
   width: 70vw;
 }
 .info-title{
-  font-size: 90px;
+  font-size: 3em;
 }
 .info-text{
-  font-size: 50px;
+  font-size: 1.75em;
 }
 
 /* SEARCH AREA ---------------------------------------------------------------*/
 
-.search-section{
-  position: absolute;
-  top: 30vh;
-  width: 100vw;
+.search-container{
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-top: 25vh;
+}
+
+.search-input-section{
+  top: 22.5vh;
+  padding-top: 25vh;
   padding: 0 60px;
 }
 .title-text{
@@ -149,10 +182,9 @@
 .title-text-main{
   font-size: 60px;
   line-height: 60px;
-  letter-spacing: -2px;
 }
 .title-text-main span{
-  font-size: 30px;
+  font-size: 0.5em;
   letter-spacing: -1px;
 }
 .title-text-underline{
@@ -161,17 +193,71 @@
 
 .search-bar-container{
   margin-top: 60px;
-  position: absolute;
+  position: relative;
+  display: inline-block;
   left: 50%;
   transform: translateX(-50%);
 }
 input{
 
 }
-.search-bar{
-  border-bottom: 1px solid #000;
-  border-left: 1px solid #000;
-  border-right: 1px solid #000;
+input[type=text], input[type=text]:focus{
+  border: none;
+  box-shadow: 0;
+  border-bottom: 2px solid #000;
+  border-left: 2px solid #000;
+  border-right: 2px solid #000;
   height: 44px;
   width: 450px;
+  padding: 8px 10px;
+  outline: none;
+  font-size: 1.1em;
+}
+
+input[type=submit]{
+  height: 39px;
+  float: right;
+  margin-top: 22px;
+  background: #fff;
+  border: 0 none;
+  cursor: pointer;
+  -webkit-border-radius: 5px;
+  border-radius: 0;
+  font-size: 1.2em;
+  border-bottom: 2px solid #000;
+}
+input[type=submit]:hover{
+  border-bottom: 0;
+}
+input[type=submit]:focus{
+  outline: none;
+}
+
+
+
+.terms{
+  width: 500px;
+  margin: 230px auto 0 auto;
+  font-size: 1em;
+  display: none;
+}
+
+.results-container{
+  margin-top: 80px;
+  padding: 0 50px;
+}
+.results-container p{
+  font-size: 1.5em;
+}
+.results-container p span{
+  font-size: 1em;
+}
+.results-records{
+  padding-left: 110px;
+}
+.results-answer-box{
+  padding-left: 220px;
+}
+.result-topic{
+  border-bottom: 2px solid #000;
 }
