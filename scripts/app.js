@@ -1,3 +1,15 @@
+var doSearch = function(facet, str) {
+  console.log("Do the search: " + str);
+
+  // language_code_t
+  // publishing_country_t
+  //
+
+  $.get('http://localhost:8983/solr/query?rows=0&facet=true&facet.field=' + facet + 'q=' + str, function(data) {
+    console.log(data);
+  });
+};
+
 $(document).ready(function(){
 
   $('.menu-butt').click(function(){
@@ -35,6 +47,11 @@ $(document).ready(function(){
     $('.sidebar-left').animate({
       left: -580
     }, 200);
+  });
+
+  $('input[type=submit]').click(function(e) {
+    e.preventDefault();
+    doSearch('language_code_t', $('input[name=searchf]').val());
   });
 
 });
