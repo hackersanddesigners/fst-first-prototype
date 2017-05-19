@@ -5,7 +5,7 @@ var doSearch = function(facet, str) {
   // publishing_country_t
   //
 
-  $.get('http://localhost:8983/solr/query?rows=0&facet=true&facet.field=' + facet + 'q=' + str, function(res) {
+  $.get('http://localhost:8888/solr?rows=0&facet=true&facet.field=' + facet + '&q=' + str, function(res) {
     var data = JSON.parse(res);
     var totalCount = data.response.numFound;
     console.log("total count: " + totalCount);
