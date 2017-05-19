@@ -1,3 +1,13 @@
+var staticTexts = {
+  'language_code_t': "Lorem ipsum....",
+  'publishing_country_t': "Lorem ipsum",
+}
+
+
+
+
+
+
 var doSearch = function(facet, str) {
   console.log("Do the search: " + str);
 
@@ -12,7 +22,11 @@ var doSearch = function(facet, str) {
     var facets = data.facet_counts.facet_fields[facet];
     for(var i = 0; i < facets.length; i++) {  
       console.log(facets[i]);
+      // Show search results....
+
     }
+
+
   });
 };
 
