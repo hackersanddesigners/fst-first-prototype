@@ -48,7 +48,7 @@ body{
   overflow: scroll;
 }
 .sidebar-left{
-  left: 0;
+  left: -580px;
   background-color: #51B151;
   width: 600px;
 }
