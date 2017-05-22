@@ -72,7 +72,11 @@ var topicDisplay = function(e) {
   var r = staticTexts.a;
   console.log(r);
 
-  $('.sidebar-text-container').html(r);
+  $('.sidebar-text-container').html('<div class="sidebar-text serif"><p>Search question related to <span>country of publishing</span>:</p></div>');
+
+  $('.sidebar-left').animate({
+    left: 0
+  }, 200);
 
 };
 
