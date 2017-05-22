@@ -30,15 +30,16 @@ var doSearch = function(facet, str) {
       $('.results-container').append('</br><div class="results-records serif"><p>There were no records found for: <span class="sans results-subject">"' + str + '"</span>');
 
     } else{
-      var percentage1 = Math.floor((facets[1] / totalCount) * 100);
-      var percentage2 = Math.floor((facets[3] / totalCount) * 100);
-      var percentage3 = Math.floor((facets[5] / totalCount) * 100);
-      var percentage4 = Math.floor((facets[7] / totalCount) * 100);
 
       $('.results-container').html('<div class="results-title serif"><p>Results:</p></div>');
 
       // X Records for Y
       $('.results-container').append('</br><div class="results-records serif"><p><span class="sans results-answer">'+ totalCount +'</span> records found for: <span class="sans results-subject">"' + str + '"</span></br>');
+
+      var percentage1 = Math.floor((facets[1] / totalCount) * 100);
+      var percentage2 = Math.floor((facets[3] / totalCount) * 100);
+      var percentage3 = Math.floor((facets[5] / totalCount) * 100);
+      var percentage4 = Math.floor((facets[7] / totalCount) * 100);
 
       // Of which %
       $('.results-container').append('</br><div class="results-answer-box serif"><p>Of which:</p><p>Search question related to <span class="result-topic">language</span></p></br><div class="sans"><p>' + percentage1 + '% in ' + facets[0] + '</br>' + percentage2 + '% in ' + facets[2]+ '</br>' + percentage3 + '% in ' + facets[4] + '</br>' + percentage4 + '% in ' + facets[6]);
