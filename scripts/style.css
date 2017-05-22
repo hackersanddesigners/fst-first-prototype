@@ -236,13 +236,19 @@ input[type=submit]:focus{
   outline: none;
 }
 
+.upper{
+  text-transform: uppercase;
+}
 
+.percentage{
+  min-width: 56px;
+}
 
 .terms{
   width: 500px;
   margin: 230px auto 0 auto;
   font-size: 1em;
-  display: none;
+  /*display: none;*/
 }
 
 .results-container{
@@ -263,4 +269,8 @@ input[type=submit]:focus{
 }
 .result-topic{
   border-bottom: 2px solid #000;
+}
+.result-topic:hover{
+  border-bottom: 0;
+  cursor: pointer;
 }
