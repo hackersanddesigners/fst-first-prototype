@@ -51,6 +51,7 @@ body{
   left: -580px;
   background-color: #51B151;
   width: 600px;
+  z-index: 50;
 }
 .sidebar-right{
   right: 0;
@@ -72,10 +73,8 @@ body{
 .sidebar-text p:not(:first-child){
   text-indent: 0.7em;
 }
-.sidebar-comments-container{
-  height: 300px;
-  width: 100%;
-  background-color: #CCCCCC;
+.sidebar-text p span{
+  border-bottom: 2px solid #000;
 }
 
 
@@ -124,8 +123,8 @@ body{
   display: none;
 }
 .menu ol li a{
-  display: inline-block;
-  box-shadow: inset 0 -16px 0 #fff;
+  display: inline;
+  box-shadow: inset 0 -0.3em white;
   margin-bottom: 10px;
   font-size: 3em;
   text-align: center;
@@ -162,9 +161,20 @@ body{
 .info-title{
   font-size: 3em;
 }
-.info-text{
-  font-size: 1.75em;
+.info-text, .info-container ol li{
+  font-size: 1.5em;
+  list-style-type: none;
 }
+.info-text a{
+  text-decoration: none;
+  color: #000;
+  border-bottom: 2px solid #000;
+}
+.info-text a:hover{
+  border-bottom: 0;
+  cursor: pointer;
+}
+
 
 /* SEARCH AREA ---------------------------------------------------------------*/
 
@@ -235,7 +245,9 @@ input[type=submit]:hover{
 input[type=submit]:focus{
   outline: none;
 }
-
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+   background-color: #fff;
+}
 .upper{
   text-transform: uppercase;
 }
@@ -273,4 +285,54 @@ input[type=submit]:focus{
 .result-topic:hover{
   border-bottom: 0;
   cursor: pointer;
+}
+
+@media screen and (max-width: 650px) {
+
+  .sidebar-left{
+      width: 100%;
+      left: calc(-90% - 20px);
+  }
+  .menu ol li a{
+    font-size: 1.5em;
+  }
+  .purple{
+    padding: 30px 10px;
+  }
+  .info-container{
+    width: 100%;
+  }
+  .info-title {
+      font-size: 2em;
+  }
+  .info-text {
+    font-size: 1em;
+  }
+  input[type=text], input[type=text]:focus {
+    width: 70vw;
+    font-size: 0.9em;
+  }
+  input[type=submit] {
+    font-size: .9em;
+  }
+  .title-text-main {
+    font-size: 40px;
+    line-height: 40px;
+  }
+  .results-records {
+    padding-left: 40px;
+  }
+  .results-answer-box {
+    padding-left: 80px;
+  }
+  .results-container p {
+    font-size: 1em;
+  }
+  .terms {
+    width: 100%;
+    margin: 100px auto 0 auto;
+    font-size: .5em;
+  }
+
+
 }
