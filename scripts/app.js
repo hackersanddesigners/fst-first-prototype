@@ -51,6 +51,7 @@ var mainSearch = function(str) {
 
   $.when.apply($, defs).then(function() {
     $('.terms').hide();
+    $('.results-subject').html(str);
     for(var i = 0; i < arguments.length; i++) {
       var data = JSON.parse(arguments[i][0]);
       console.log(data);
@@ -59,11 +60,24 @@ var mainSearch = function(str) {
     };
     showTotal(totalCount);
     $('.results-container').show();
+
+    $('.ellipse').click(function(e) {
+      console.log('clicked ellipse');
+      console.log(e.target);
+      $(e.target).parent().siblings('.expandable').show();
+      $(e.target).parent().hide()
+    })
   });
 };
 
 var facetSearch = function(code, top, pred, str) {
-  var url = 'http://' + window.location.host + '/solr?rows=0&facet=true&facet.field=' + code + '&q=' + str;
+
+  var url = 'http://' +
+    window.location.host +
+    '/solr?rows=0&facet=true&facet.field=' + code +
+    '&top=' + top +
+    '&q=' + str;
+
   if(pred) { url += ' AND ' + pred; }
   console.log(url);
   return $.get(url);
@@ -73,27 +87,29 @@ var showTotal = function(totalCount) {
   $('.results-answer').html(totalCount);
 };
 
-var facetTopicLookup = function(code) {
-  for(var i = 0; i < facetArray.length; i++) {
-    var a = facetArray[i];
-    if(a[1] == code) {
-      return a[0];
-    }
-  }
-}
-
 var appendResult = function(data) {
   var code = Object.keys(data.facet_counts.facet_fields)[0];
   var facets = data.facet_counts.facet_fields[code];
-  var top = facetTopicLookup(code);
+  var top = data.responseHeader.params.top;
+  var numFound = data.response.numFound;
 
-  var percentage1 = (facets[1] / 100) * 100;
-  var percentage2 = (facets[3] / 100) * 100;
-  var percentage3 = (facets[5] / 100) * 100;
-  var percentage4 = (facets[7] / 100) * 100;
-  var percentageA = Math.round(percentage1 * 100) / 100;
+  var html = '';
 
-  $('.results-answer-box').append('</br></br><p>Search question related to <span id=' + code + ' class="result-topic" onclick="topicDisplay(this)" data-topicval="' + top + '" data-topic="' + top + '">' + top + '</span></p></br><div class="sans"><p><span class="percentage">' + percentageA + '%</span> in <span class="upper">' + facets[0] + '</span></br><span class="percentage">' + percentage2 + '%</span> in <span class="upper">' + facets[2]+ '</span></br><span class="percentage">' + percentage3 + '%</span> in <span class="upper">' + facets[4] + '</span></br><span class="percentage">' + percentage4 + '%</span> in <span class="upper">' + facets[6] + '</span></div>');
+  if(facets[1] > 0) {
+    html += '<div><br/><br/><p>Search question related to <span id=' + code + ' class="result-topic" onclick="topicDisplay(this)" data-topicval="' + top + '" data-topic="' + top + '">' + top + '</span></p><br/>';
+
+    for(var i = 0; facets[i+1] > 0; i += 2) {
+      var p = (facets[i+1] / numFound) * 100;
+      html += '<div class="sans' + (i > 7 ? ' expandable' : '') + '"><p><span class="percentage">' + (p > 1 ? p.toFixed(0) : p.toFixed(2)) + '%</span> in <span class="upper">' + facets[i] + '</span><br/></div>';
+    }
+
+    if(facets.length > 7 && facets[9] > 0) {
+      html += '<div class="sans ellipse"><p>...</p></div>';
+    }
+  }
+  html += '</div>';
+  $('.results-answer-box').append(html);
+    
 };
 
 var topicDisplay = function(e) {
@@ -149,7 +165,6 @@ $(document).ready(function(){
   $('.sidebar-close').click(function(){
     var mobCheck = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     if ( mobCheck ){
-
       var w = $(window).width() - 20;
       $('.sidebar-left').animate({
         left: w
@@ -169,8 +184,9 @@ $(document).ready(function(){
   // SEARCH
   $('input[type=submit]').click(function(e) {
     e.preventDefault();
+    $('.results-answer-box').html('');
     mainSearch($('input[name=searchf]').val());
-
   });
 
 });
+
