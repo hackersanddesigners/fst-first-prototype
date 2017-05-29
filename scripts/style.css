@@ -301,6 +301,16 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
   cursor: pointer;
 }
 
+.scroll-top {
+  font-size: 2.2em;
+  font-family: 'GT Sectra', sans-serif;
+  cursor: pointer;
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  display: none;
+}
+
 @media screen and (max-width: 650px) {
 
   .sidebar-left{
