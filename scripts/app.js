@@ -4,7 +4,7 @@
 // - Add all available texts
 
 var staticTexts = {
-  'Language of publication':            'The filter Language of publication refers to the predominant language of a publication*. It is an interesting filter to consider in the light of our question: Why are the authors of the books I read so white, so male, so Eurocentric?, because it shows how difficult is is to make conclusions about race and nationality of the author on the basis of the language of an item. Despite those shortcomings, this filter clearly reflects that English remains the dominant language of global scholarly publishing, with 81,52% of the items of this data set being published in English. This highlights a linguistic monoculture, that scholars such as Gloria E. Anzaldúa have long tried to criticize and attempted to intervene in. Additionally, the fact that English, Dutch, French, Italian and German are the five most frequent languages of publication is – despite of the occurrence of some of these languages in different geographical contexts – still very telling for how our Western knowledge economy functions.*This filter is an interpretation of the MARC 21 tag 008 - Fixed-Length Data Elements character positions 35-37 - Language.',
+  'Language of publication':            'The filter <b>Language of publication</b> refers to the predominant language of a publication*. It is an interesting filter to consider in the light of our question: Why are the authors of the books <i>I read so white, so male, so Eurocentric?</i>, because it shows how difficult is is to make conclusions about race and nationality of the author on the basis of the language of an item. Despite those shortcomings, this filter clearly reflects that English remains the dominant language of global scholarly publishing, with 81,52% of the items of this data set being published in English. This highlights a linguistic monoculture, that scholars such as Gloria E. Anzaldúa have long tried to criticize and attempted to intervene in. Additionally, the fact that English, Dutch, French, Italian and German are the five most frequent languages of publication is – despite of the occurrence of some of these languages in different geographical contexts – still very telling for how our Western knowledge economy functions.<br><br>*This filter is an interpretation of the MARC 21 tag 008 - Fixed-Length Data Elements character positions 35-37 - Language.',
   'Place of publication':               'This filter refers to the country, in which a work has been published.<br><br>* It is an interesting filter, as it shows the geographical locations, around which current global scholarly publishing centres. The most frequently named locations in this context are the United States, with New York, and the United Kingdom, with London and Cambridge.',
   'Country of Publishing/Producing entity':               'This filter refers to the country, in which a work has been published.* It is an interesting filter, as it shows the geographical locations, around which current global scholarly publishing centres. The most frequently named locations in this context are the United States, with New York, and the United Kingdom, with London and Cambridge.',
   'Multiple places':               'This filter refers to the country, in which a work has been published.* It is an interesting filter, as it shows the geographical locations, around which current global scholarly publishing centres. The most frequently named locations in this context are the United States, with New York, and the United Kingdom, with London and Cambridge.',
@@ -155,6 +155,12 @@ $(document).ready(function(){
     $('body').css('position', 'static');
   });
 
+  $('.title-text-underline').click(function() {
+    var att = $(this).attr('value'),
+        typ = '#info-' + att;
+    $(typ).css('display', 'block');
+  });
+
   $('.menu-select').click(function(){
     var att = $(this).attr('value'),
         typ = '#info-' + att;
@@ -162,12 +168,9 @@ $(document).ready(function(){
     if ( att == 0 ){
       $('.menu').css('display', 'none');
       $('body').css('position', 'static');
-      console.log('yep');
     } else {
       $('.menu').css('display', 'none');
       $(typ).css('display', 'block');
-
-      console.log('nope');
     }
 
   });

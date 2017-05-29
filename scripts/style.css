@@ -67,8 +67,9 @@ body{
   cursor: pointer;
 }
 .sidebar-text{
-  font-size: 1.5em;
+  font-size: 1.0em;
   padding: 20px 100px 20px 20px;
+  line-height: 1.1em;
 }
 .sidebar-text p:not(:first-child){
   text-indent: 0.7em;
@@ -126,7 +127,7 @@ body{
   display: inline;
   box-shadow: inset 0 -0.3em white;
   margin-bottom: 10px;
-  font-size: 3em;
+  font-size: 2.2em;
   text-align: center;
 }
 .menu ol li a:hover{
@@ -159,10 +160,10 @@ body{
   width: 70vw;
 }
 .info-title{
-  font-size: 3em;
+  font-size: 2.2em;
 }
 .info-text, .info-container ol li{
-  font-size: 1.5em;
+  font-size: 1.0em;
   list-style-type: none;
 }
 .info-text a{
@@ -201,6 +202,7 @@ body{
   letter-spacing: -1px;
 }
 .title-text-underline{
+  cursor: pointer;
   border-bottom: 2px solid #000;
 }
 
@@ -211,9 +213,12 @@ body{
   left: 50%;
   transform: translateX(-50%);
 }
-input{
 
+.submit-button {
+  margin-top: 22px;
+  float: right;
 }
+
 input[type=text], input[type=text]:focus{
   border: none;
   box-shadow: 0;
@@ -229,8 +234,8 @@ input[type=text], input[type=text]:focus{
 
 input[type=submit]{
   height: 39px;
-  float: right;
-  margin-top: 22px;
+/*  float: right; 
+  margin-top: 22px; */
   background: #fff;
   border: 0 none;
   cursor: pointer;
@@ -239,6 +244,7 @@ input[type=submit]{
   font-size: 1.2em;
   border-bottom: 2px solid #000;
 }
+
 input[type=submit]:hover{
   border-bottom: 0;
 }
@@ -258,8 +264,8 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
 
 .terms{
   width: 50%;
-  margin: 230px auto 0 auto;
-  font-size: 1em;
+  margin: 66px auto 66px auto;
+  font-size: 0.6em;
   /*display: none;*/
 }
 
