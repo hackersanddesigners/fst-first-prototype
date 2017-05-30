@@ -4,7 +4,7 @@
 // - Add all available texts
 
 var facetArray = [
-  ['Predominant Language', 'fixed_lang_t'],
+  ['Predominant language', 'fixed_lang_t'],
   ['Language of the item', 'a_language_code_t'],
   ['Multiple languages', 'a_language_code_t', 'count_a_language_code_i:[2 TO *]'],
   ['Translated work', 'h_language_code_t', 'h_language_code_t:*'],
@@ -17,9 +17,9 @@ var facetArray = [
   ['Date of publication (part 1)', 'c_imprint_s'],
   ['Date of publication (part 2)', 'copyright_s'],
   ['(Personal) Information about the author', 'a_creator_characteristics_t'],
-  ['relator term', 'e_personal_name_t'],
+  ['Relator term', 'e_personal_name_t'],
   ['Titles held by the author', 'c_personal_name_t'],
-  ['Authors dead/alive', 'death_d_personal_name_t', 'birth_d_personal_name_t'],
+  ['Authors dead or alive', 'death_d_personal_name_t', 'birth_d_personal_name_t'],
   ['Gender', 'gender_s']
 ];
 
@@ -105,9 +105,9 @@ var topicDisplay = function(e) {
   var a = e.getAttribute("data-topicval");
   var g = e.getAttribute("data-topic");
 
-  $.get('/'+a+'.html'), function( data ) {
+  $.get('/assets/'+a+'.html', function( data ) {
     $('.sidebar-text-container').html('<div class="sidebar-text serif"><p>Search question related to <span>' + g + '</span>:</p></br><p>' + data + '</p></div>');
-  })
+  });
 
   $('.sidebar-left').animate({
     left: 0
