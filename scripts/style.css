@@ -209,6 +209,12 @@ body{
   border-bottom: 2px solid #000;
 }
 
+.title-text-underline a {
+  color: #000;
+  text-decoration: none;
+}
+
+
 .search-bar-container{
   margin-top: 60px;
   position: relative;

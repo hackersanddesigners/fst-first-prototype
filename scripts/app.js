@@ -5,7 +5,7 @@
 
 var facetArray = [
   ['Predominant language', 'fixed_lang_t'],
-  ['Language of the item', 'a_language_code_t'],
+/*  ['Language of the item', 'a_language_code_t'], */
   ['Multiple languages', 'a_language_code_t', 'count_a_language_code_i:[2 TO *]'],
   ['Translated work', 'h_language_code_t', 'h_language_code_t:*'],
   ['Original language', 'a_language_code_t'],
