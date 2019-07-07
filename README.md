@@ -2,6 +2,8 @@
 
 ## setup
 
+### solr
+
 - install `apache solr`, [official docs](https://lucene.apache.org/solr/guide/7_5/taking-solr-to-production.html)
 - make two new cores, named `readin-fst` and `name2gender`, with the following command ([ref](https://stackoverflow.com/a/43032588)):
 
@@ -43,6 +45,16 @@ ProxyPass /solr http://localhost:8983/solr/readin-fst/query
 ```
 
 for this to work, make sure to enable `sudo a2enmod proxy` and `sudo a2enmod proxy_http`, otherwise Apache can't do the `ProxyPass` and query the solr database ([ref](https://stackoverflow.com/a/26045183)).
+
+#### solr help 
+
+In case solr stops, or fails etc, try to simply restart it by doing
+
+```
+sudo service solr restart
+```
+
+it will restart the process under the `solr` user on the appropriate port (eg `8983`). this is using the `init.d` process.
 
 ### dokuwiki
 
