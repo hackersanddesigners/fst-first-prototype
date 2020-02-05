@@ -56,6 +56,26 @@ sudo service solr restart
 
 it will restart the process under the `solr` user on the appropriate port (eg `8983`). this is using the `init.d` process.
 
+#### using solr APIs
+
+- `s` = string
+- `t` = text
+- `i` = integer
+
+some refs on building query:
+
+- [JSON Facet API](http://yonik.com/json-facet-api/)
+- [count distinct in solr](http://yonik.com/solr-count-distinct/)
+- [multi-select faceting](http://yonik.com/multi-select-faceting/)
+
+```
+https://feministsearchtool.nl/solr?q=gender OR race OR intersectionality OR transgender OR "social class"&rows=150&fl=gender_s AND a_title_statement_t AND b_title_statement_t AND title_statement_t AND imprint_b
+```
+
+```
+https://feministsearchtool.nl/solr?q=gender OR race OR intersectionality OR transgender OR"social class"&rows=150
+```
+
 ### dokuwiki
 
 1. toggle your options (eg, toggle off all languages except the one(s) you need to use)
