@@ -1,8 +1,8 @@
 import xml.etree.ElementTree
 import re
 import json
-import urllib
-import urllib2
+import urllib.request
+
 
 '''
 language_code_t    Language of publication
@@ -100,34 +100,34 @@ def store_name(rec):
   try:
     print(rec)
     # Add it to the database so we don't make multiple requests for names we already know - JBG
-    req = urllib2.Request('http://localhost:8983/solr/name2gender/update')
+    req = urllib.request.Request('http://localhost:8983/solr/name2gender/update')
     req.add_header('Content-Type', 'application/json')
-    res = urllib2.urlopen(req, json.dumps([rec]))
+    res = urllib.request.urlopen(req, json.dumps([rec]))
     print(res.read())
-  except Exception, e:
+  except (Exception, e):
     print(e)
     exit()
 
 def get_name(name):
   try:
-    req = urllib2.Request('http://localhost:8983/solr/name2gender/get?id=' + urllib.quote(name))
+    req = urllib.request.Request('http://localhost:8983/solr/name2gender/get?id=' + urllib.quote(name))
     req.add_header('Content-Type', 'application/json')
-    res = urllib2.urlopen(req)
+    res = urllib.request.urlopen(req)
     data = json.load(res)
     if data['doc'] != None:
-      print "YOU GET THIS FOR FREE!!!!"
+      print("YOU GET THIS FOR FREE!!!!")
       return data["doc"]['gender_s']
     else:
       return None
-  except Exception, e:
+  except(Exception, e):
     print(e)
     exit()
 
 def get_wdid(item_str):
   try:
     esc_str = urllib.quote_plus(item_str)
-    req = urllib2.Request('https://en.wikipedia.org/w/api.php?action=query&format=json&prop=pageprops%7Cpageterms&list=&meta=&generator=search&gsrsearch=' + esc_str + '&gsrlimit=1')
-    res = urllib2.urlopen(req)
+    req = urllib.request.Request('https://en.wikipedia.org/w/api.php?action=query&format=json&prop=pageprops%7Cpageterms&list=&meta=&generator=search&gsrsearch=' + esc_str + '&gsrlimit=1')
+    res = urllib.request.urlopen(req)
     data = json.load(res)
     wdid = data['query']['pages'].itervalues().next()['pageprops']['wikibase_item']
     return wdid
@@ -136,8 +136,8 @@ def get_wdid(item_str):
 
 def get_wdsex(wdid, name):
   try:
-    req = urllib2.Request('https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&ids=' + wdid + '&props=labels|descriptions|claims&languages=en')
-    res = urllib2.urlopen(req)
+    req = urllib.request.Request('https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&ids=' + wdid + '&props=labels|descriptions|claims&languages=en')
+    res = urllib.request.urlopen(req)
     data = json.load(res)
     sex_id = data['entities'].itervalues().next()['claims']['P21'][0]['mainsnak']['datavalue']['value']['id']
     gender = {
@@ -158,7 +158,7 @@ def get_wdsex(wdid, name):
     store_name(rec)
 
     return gender
-  except Exception, e:
+  except(Exception, e):
     print(e)
     exit()
 
@@ -168,7 +168,7 @@ def get_gender(name):
     return "unknown"
 
   try:
-    gender_req = urllib2.urlopen('https://api.genderize.io/?name=' + name)
+    gender_req = urllib.request.urlopen('https://api.genderize.io/?name=' + name)
     data = json.load(gender_req)
     rec = {}
     rec['id'] = name
@@ -185,18 +185,19 @@ def get_gender(name):
       return 'unknown'
     else:
       return gender
-  except Exception, e:
+  except(Exception, e):
     # We can only make 1000 gender requests per day... - JBG
     print(e)
     exit()
 
 def solr_store(recs):
   try:
-    req = urllib2.Request('http://localhost:8983/solr/readin-fst/update')
+    req = urllib.request.Request('http://localhost:8983/solr/readin-fst/update')
     req.add_header('Content-Type', 'application/json')
-    res = urllib2.urlopen(req, json.dumps(recs))
+    res = urllib.request.urlopen(req, json.dumps(recs))
     print(res.read())
-  except Exception, e:
+    
+  except Exception as e:
     # We can only make 1000 gender requests per day... - JBG
     print(e)
     exit()
