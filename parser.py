@@ -1,3 +1,6 @@
+import sys
+import os
+from pathlib import Path
 import xml.etree.ElementTree
 import re
 import json
@@ -206,118 +209,133 @@ def namespace(element):
   m = re.match('\{.*\}', element.tag)
   return m.group(0) if m else ''
 
-print("Parsing...")
 
-root = xml.etree.ElementTree.parse('readin.xml').getroot()
-ns = namespace(root)
-count = 0
-bd = re.compile('([0-9]{4})-([0-9]{4})?')
+def main(filepath: str | os.PathLike):
+  """
+  """
 
-for record in root:
-  ns = namespace(record)
-  rec = {}
+  print("Parsing...")
+  root = xml.etree.ElementTree.parse(filepath).getroot()
+  ns = namespace(root)
+  count = 0
+  bd = re.compile('([0-9]{4})-([0-9]{4})?')
 
-  # Control Fields - JBG
-  for controlfield in record.findall(ns + 'controlfield'):
-    tag = controlfield.attrib['tag']
+  for record in root:
+    ns = namespace(record)
+    rec = {}
 
-    if tag == "001":
-      rec['id'] = controlfield.text
+    # Control Fields - JBG
+    for controlfield in record.findall(ns + 'controlfield'):
+      tag = controlfield.attrib['tag']
 
-    elif tag == "008":
-      rec['fixed_lang_t'] =  controlfield.text[35:38]
-      rec['fixed_place_t'] =  controlfield.text[15:18]
-      rec['fixed_pubstat_t'] =  controlfield.text[6]
+      if tag == "001":
+        rec['id'] = controlfield.text
 
-  # Datafields - JBG
+      elif tag == "008":
+        rec['fixed_lang_t'] =  controlfield.text[35:38]
+        rec['fixed_place_t'] =  controlfield.text[15:18]
+        rec['fixed_pubstat_t'] =  controlfield.text[6]
 
-  for datafield in record.findall(ns + 'datafield'):
-    ns = namespace(datafield)
-    tag = datafield.attrib['tag']
-    attr = attrs[tag]
+    # Datafields - JBG
+    for datafield in record.findall(ns + 'datafield'):
+      ns = namespace(datafield)
+      tag = datafield.attrib['tag']
+      attr = attrs[tag]
 
-    rec['tag_' + attr] = tag
+      rec['tag_' + attr] = tag
 
-    try:
-      ind1 = datafield.attrib['ind1']
-      if ind1 != " ":
-        rec['ind1_' + attr] = ind1
-      ind2 = datafield.attrib['ind2']
-      if ind2 != " ":
-        rec['ind2_' + attr] = ind2
-    except:
-      pass
+      try:
+        ind1 = datafield.attrib['ind1']
+        if ind1 != " ":
+          rec['ind1_' + attr] = ind1
+          ind2 = datafield.attrib['ind2']
+          if ind2 != " ":
+            rec['ind2_' + attr] = ind2
+      except:
+        pass
 
-    val = ""
-    codes = ""
+      val = ""
+      codes = ""
 
-    for subfield in datafield.findall(ns + 'subfield'):
-      code = subfield.attrib['code']
+      for subfield in datafield.findall(ns + 'subfield'):
+        code = subfield.attrib['code']
 
-      if len(codes) > 0:
-        codes += "," + code
-      else:
-        codes = code
-      
-      st = subfield.text
-      if st != None:
-        key = code + "_" + attr
-        ckey = "count_" + code + "_" + attr[:-1] + "i"
-        if key in rec:
-          rec[ckey] += 1
-          rec[key] += "," + st
-
+        if len(codes) > 0:
+          codes += "," + code
         else:
-          rec[ckey] = 1
-          rec[key] = st 
-        val += st + " "
+          codes = code
+        
+        st = subfield.text
+        if st != None:
+          key = code + "_" + attr
+          ckey = "count_" + code + "_" + attr[:-1] + "i"
+          if key in rec:
+            rec[ckey] += 1
+            rec[key] += "," + st
 
-        # Handel Name - JBG
-        if tag == "100" and code == "a":
-          names = st.split(",")
-          gnames = " ".join(names[1:]).strip()
-          sname = names[0].strip()
-          fullname = (gnames + " " + sname).strip().lower().encode('utf8')
-
-          print("CHECKING NAME: " + fullname)
-
-          rec['gender_s'] = 'unknown'
-          gender = get_name(fullname) 
-          if gender != None:
-            rec['gender_s'] = gender
           else:
-            try:
-              wdid = get_wdid(fullname)
-              if wdid != None:
-                rec['gender_s'] = get_wdsex(wdid, fullname)
-            except:
+            rec[ckey] = 1
+            rec[key] = st 
+            val += st + " "
+
+          # Handel Name - JBG
+          if tag == "100" and code == "a":
+            names = st.split(",")
+            gnames = " ".join(names[1:]).strip()
+            sname = names[0].strip()
+            fullname = (gnames + " " + sname).strip().lower().encode('utf8')
+
+            print("CHECKING NAME: " + fullname)
+
+            rec['gender_s'] = 'unknown'
+            gender = get_name(fullname) 
+            if gender != None:
+              rec['gender_s'] = gender
+            else:
               try:
-                firstname = names[1].strip().lower().encode('utf8')
-                gender = get_name(firstname)
-                if gender == None:
-                  rec['gender_s'] = get_gender(firstname)
-                else:
-                  rec['gender_s'] = gender
+                wdid = get_wdid(fullname)
+                if wdid != None:
+                  rec['gender_s'] = get_wdsex(wdid, fullname)
               except:
-                rec['gender_s'] = 'unknown'
-              
-        # Handle Birth/Death - JBG
-        m = bd.match(st)
-        if tag == "100" and code == "d" and m:
-          rec["birth_" + key] = m.groups()[0]
-          if m.groups()[1] != None:
-            rec["death_" + key] = m.groups()[1]
+                try:
+                  firstname = names[1].strip().lower().encode('utf8')
+                  gender = get_name(firstname)
+                  if gender == None:
+                    rec['gender_s'] = get_gender(firstname)
+                  else:
+                    rec['gender_s'] = gender
+                except:
+                  rec['gender_s'] = 'unknown'
+                
+          # Handle Birth/Death - JBG
+          m = bd.match(st)
+          if tag == "100" and code == "d" and m:
+            rec["birth_" + key] = m.groups()[0]
+            if m.groups()[1] != None:
+              rec["death_" + key] = m.groups()[1]
 
-    rec[attr] = val.strip()
-    rec["codes_" + attr] = codes 
+      rec[attr] = val.strip()
+      rec["codes_" + attr] = codes 
     
-  if "id" in rec:
-    print("Storing...[" + str(count) + ", " + rec["id"] + "]")
-    #print(json.dumps(rec, indent=4, sort_keys=True))
-    solr_store([rec])
-    count += 1
-  else:
-    print("ERROR: No id: ") 
-    print(rec)
+      if "id" in rec:
+        print("Storing...[" + str(count) + ", " + rec["id"] + "]")
+        #print(json.dumps(rec, indent=4, sort_keys=True))
+        solr_store([rec])
+        count += 1
+      else:
+        print("ERROR: No id: ") 
+        print(rec)
 
-print("done.")
+
+      print("done.")
+
+
+input_file = sys.argv[1]
+fp = Path(input_file).expanduser().absolute()
+if fp.is_file():
+  main(fp)
+
+else:
+  raise FileNotFoundError
+
+
