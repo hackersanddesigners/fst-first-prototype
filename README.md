@@ -9,18 +9,29 @@
 
 ```
 cd /opt/solr
-sudo -u solr ./bin/solr create -c netest
+sudo -u solr ./bin/solr create -c <core-name>
 sudo ls -la /var/solr/data // check folders are created
 ```
 
-- run `python parser.py` making sure `readin.xml` is in the same folder
+- run `python parser.py /path/to/readin.xml`.
 
-this should be the proper way, but haven't worked for me!
+the current VPS cannot handle parse a 30MB XML file so we need to run this on our machine. 
 
-instead, if you have installed solr following the guide linked above, eg using the default settings and folder structure, copy the cores (`name2gender`, `readin-fst`) from the previous solr installation to the new one:
+afterwards, upload the two folders `name2gender` and `readin-fst` from your local SOLR installation (eg under `./solr/server/solr`) to the VPS, and move each folder under `/var/solr/data` and fix the file + folder permissions:
 
-- `sudo cp -r <solr-old-install>/server/solr/name2gender /var/solr/data/.`
-- `sudo cp -r <solr-old-install>/server/solr/readin-fst /var/solr/data/.`
+```
+sudo chown -R solr:solr /var/solr/data/readin-fst
+sudo chown -R solr:solr /var/solr/data/name2gender
+```
+
+we don't need to create a core for each folder beforehand on the VPS, as we copy the full folder in there.
+
+reload each SOLR core:
+
+```
+curl "http://localhost:8983/solr/admin/cores?action=RELOAD&core=name2gender"
+curl "http://localhost:8983/solr/admin/cores?action=RELOAD&core=readin-fst"
+```
 
 then, add a new proxy pass in your `nginx` or `apache` config file:
 
@@ -55,6 +66,16 @@ sudo service solr restart
 ```
 
 it will restart the process under the `solr` user on the appropriate port (eg `8983`). this is using the `init.d` process.
+
+to check the SOLR log:
+
+```
+sudo cat /var/solr/logs/solr.log
+```
+
+#### VPS and SOLR swap memory
+
+make sure the VPS / VM has a swap file of 2gb or so, otherwise SOLR does not run. see for eg <https://www.devtutorial.io/how-to-create-swap-space-on-debian-12-p3119.html>.
 
 #### using solr APIs
 
