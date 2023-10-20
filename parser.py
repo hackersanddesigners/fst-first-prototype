@@ -5,6 +5,7 @@ import xml.etree.ElementTree
 import re
 import json
 import urllib.request
+import urllib.parse
 
 
 '''
@@ -107,13 +108,13 @@ def store_name(rec):
     req.add_header('Content-Type', 'application/json')
     res = urllib.request.urlopen(req, json.dumps([rec]))
     print(res.read())
-  except (Exception, e):
+  except Exception as e:
     print(e)
     exit()
 
 def get_name(name):
   try:
-    req = urllib.request.Request('http://localhost:8983/solr/name2gender/get?id=' + urllib.quote(name))
+    req = urllib.request.Request('http://localhost:8983/solr/name2gender/get?id=' + urllib.parse.quote(name))
     req.add_header('Content-Type', 'application/json')
     res = urllib.request.urlopen(req)
     data = json.load(res)
@@ -122,13 +123,13 @@ def get_name(name):
       return data["doc"]['gender_s']
     else:
       return None
-  except(Exception, e):
+  except Exception as e:
     print(e)
     exit()
 
 def get_wdid(item_str):
   try:
-    esc_str = urllib.quote_plus(item_str)
+    esc_str = urllib.parse.quote_plus(item_str)
     req = urllib.request.Request('https://en.wikipedia.org/w/api.php?action=query&format=json&prop=pageprops%7Cpageterms&list=&meta=&generator=search&gsrsearch=' + esc_str + '&gsrlimit=1')
     res = urllib.request.urlopen(req)
     data = json.load(res)
@@ -161,7 +162,7 @@ def get_wdsex(wdid, name):
     store_name(rec)
 
     return gender
-  except(Exception, e):
+  except Exception as e:
     print(e)
     exit()
 
@@ -171,7 +172,7 @@ def get_gender(name):
     return "unknown"
 
   try:
-    gender_req = urllib.request.urlopen('https://api.genderize.io/?name=' + name)
+    gender_req = urllib.request.urlopen(f'https://api.genderize.io/?name={name}')
     data = json.load(gender_req)
     rec = {}
     rec['id'] = name
@@ -188,7 +189,7 @@ def get_gender(name):
       return 'unknown'
     else:
       return gender
-  except(Exception, e):
+  except Exception as e:
     # We can only make 1000 gender requests per day... - JBG
     print(e)
     exit()
@@ -197,12 +198,12 @@ def solr_store(recs):
   try:
     req = urllib.request.Request('http://localhost:8983/solr/readin-fst/update')
     req.add_header('Content-Type', 'application/json')
-    res = urllib.request.urlopen(req, json.dumps(recs))
-    print(res.read())
+    res = urllib.request.urlopen(req, json.dumps(recs).encode('utf-8'))
+    print(f"solr-store => {res.read()}")
     
   except Exception as e:
     # We can only make 1000 gender requests per day... - JBG
-    print(e)
+    print(f"solr-store err => {e}")
     exit()
 
 def namespace(element):
@@ -212,6 +213,8 @@ def namespace(element):
 
 def main(filepath: str | os.PathLike):
   """
+  Run parser function using different external sources to retrieve and check for
+  data, and write everything to Apache SOLR.
   """
 
   print("Parsing...")
@@ -220,9 +223,14 @@ def main(filepath: str | os.PathLike):
   count = 0
   bd = re.compile('([0-9]{4})-([0-9]{4})?')
 
+  print(f"XML file parsed.")
+  print(f"Start checking each record...")
+
   for record in root:
     ns = namespace(record)
     rec = {}
+
+    print(f"record => {record, ns}")
 
     # Control Fields - JBG
     for controlfield in record.findall(ns + 'controlfield'):
@@ -248,9 +256,10 @@ def main(filepath: str | os.PathLike):
         ind1 = datafield.attrib['ind1']
         if ind1 != " ":
           rec['ind1_' + attr] = ind1
-          ind2 = datafield.attrib['ind2']
-          if ind2 != " ":
-            rec['ind2_' + attr] = ind2
+          
+        ind2 = datafield.attrib['ind2']
+        if ind2 != " ":
+          rec['ind2_' + attr] = ind2
       except:
         pass
 
@@ -285,7 +294,7 @@ def main(filepath: str | os.PathLike):
             sname = names[0].strip()
             fullname = (gnames + " " + sname).strip().lower().encode('utf8')
 
-            print("CHECKING NAME: " + fullname)
+            print(f"CHECKING NAME: {fullname}")
 
             rec['gender_s'] = 'unknown'
             gender = get_name(fullname) 
@@ -317,17 +326,19 @@ def main(filepath: str | os.PathLike):
       rec[attr] = val.strip()
       rec["codes_" + attr] = codes 
     
-      if "id" in rec:
-        print("Storing...[" + str(count) + ", " + rec["id"] + "]")
-        #print(json.dumps(rec, indent=4, sort_keys=True))
-        solr_store([rec])
-        count += 1
-      else:
-        print("ERROR: No id: ") 
-        print(rec)
+    if "id" in rec:
+      print("Storing...[" + str(count) + ", " + rec["id"] + "]")
+      #print(json.dumps(rec, indent=4, sort_keys=True))
+      solr_store([rec])
+      count += 1
+    else:
+      print("ERROR: No id: ") 
+      print(rec)
 
 
-      print("done.")
+    print("record parsing done.")
+
+  print("Everything done.")
 
 
 input_file = sys.argv[1]
