@@ -42,7 +42,7 @@ var mainSearch = function(str) {
     $('.terms').hide();
     $('.results-subject').html(str);
     for(var i = 0; i < arguments.length; i++) {
-      var data = JSON.parse(arguments[i][0]);
+      var data = arguments[i][0];
       console.log(data);
       totalCount += data.response.numFound;
       appendResult(data);
