@@ -2,6 +2,16 @@
 
 ## setup
 
+### local web-server
+
+to run a local web-server to test the frontend, we assume Python3 is available. Do:
+
+```
+python3 -m http.server
+```
+
+and point your web browser to `localhost:8000`.
+
 ### solr
 
 - install `apache solr`, [official docs](https://lucene.apache.org/solr/guide/7_5/taking-solr-to-production.html)
