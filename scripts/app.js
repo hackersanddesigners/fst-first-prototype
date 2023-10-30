@@ -61,7 +61,7 @@ var mainSearch = function(str) {
 
 var facetSearch = function(code, top, pred, str) {
 
-  var url = 'http://' +
+  var url = 'https://' +
     window.location.host +
     '/solr?rows=0&facet=true&facet.field=' + code +
     '&top=' + top +
