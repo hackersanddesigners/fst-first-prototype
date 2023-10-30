@@ -5,3 +5,6 @@ devenv.nix
 devenv.lock
 .devenv
 .devenv.flake.nix
+
+solr
+solr-backup
