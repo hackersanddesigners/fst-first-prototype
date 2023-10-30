@@ -34,8 +34,6 @@ sudo chown -R solr:solr /var/solr/data/readin-fst
 sudo chown -R solr:solr /var/solr/data/name2gender
 ```
 
-we don't need to create a core for each folder beforehand on the VPS, as we copy the full folder in there.
-
 reload each SOLR core:
 
 ```
@@ -86,6 +84,76 @@ sudo cat /var/solr/logs/solr.log
 #### VPS and SOLR swap memory
 
 make sure the VPS / VM has a swap file of 2gb or so, otherwise SOLR does not run. see for eg <https://www.devtutorial.io/how-to-create-swap-space-on-debian-12-p3119.html>.
+
+#### VPS and SOLR ulimit
+
+SOLR requires 65000 as limit for ulimit hard and soft settings. add the following to `/etc/security/limits.conf`:
+
+```
+solr    soft   nofile  65000
+solr    hard   nofile  65000
+solr    soft   nproc   65000
+solr    hard   nproc   65000
+```
+
+### Java 11 for SOLR v7.5
+
+in the process of downgrading from SOLR 9.5 to 7.5, we also had to downgrade the Java version used.
+
+while SOLR asks for Java 8 JRE, we can install version 11. do:
+
+```
+$ wget https://download.java.net/openjdk/jdk11/ri/openjdk-11+28_linux-x64_bin.tar.gz
+
+$ tar xvf openjdk-11+28_linux-x64_bin.tar.gz
+
+$ sudo mv jdk-11*/ /opt/jdk11
+
+$ sudo tee /etc/profile.d/jdk.sh <<EOF
+export JAVA_HOME=/opt/jdk11
+export PATH=\$PATH:\$JAVA_HOME/bin
+EOF
+
+$ source /etc/profile.d/jdk.sh
+
+$ echo $JAVA_HOME
+
+$ java -version
+```
+
+(ref <https://techviewleo.com/install-java-11-openjdk-11-on-debian-linux/?expand_article=1>)
+
+SOLR 7.5 still uses a hardcode path to lookup for Java and will complain it can't find a functioning Java binary in the system.
+
+to fix this, open `/opt/solr/bin/solr` at at line 217 replace:
+
+```
+JAVA=java
+```
+
+with 
+
+```
+JAVA=/opt/jdk11/bin/java
+```
+
+ref <https://stackoverflow.com/a/37125455>.
+
+then you can run the `/op/solr/bin/solr` command to create / delete cores, etc.
+
+#### SOLR setup
+
+- Apache SOLR 7.5 (<https://archive.apache.org/dist/lucene/solr/7.5.0/>)
+  - <https://archive.apache.org/dist/lucene/solr/7.5.0/solr-7.5.0.tgz>
+  - <https://archive.apache.org/dist/lucene/solr/7.5.0/solr-7.5.0.tgz.asc>
+  
+- Java (see installaton steps above) :
+
+```
+openjdk 11 2018-09-25
+OpenJDK Runtime Environment 18.9 (build 11+28)
+OpenJDK 64-Bit Server VM 18.9 (build 11+28, mixed mode)
+```
 
 #### using solr APIs
 
