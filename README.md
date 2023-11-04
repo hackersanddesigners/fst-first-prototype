@@ -175,31 +175,3 @@ https://feministsearchtool.nl/solr?q=gender OR race OR intersectionality OR tran
 https://feministsearchtool.nl/solr?q=gender OR race OR intersectionality OR transgender OR"social class"&rows=150
 ```
 
-### dokuwiki
-
-1. toggle your options (eg, toggle off all languages except the one(s) you need to use)
-2. click on Download and refuse the Save this file browser dialog (or let it go, depending on your browser prefs). copy the link of the download button (right-click, copy link), then in the home dir of your vps, do:
-   - `curl -O <dokuwiki-download-url>`
-3. `tar xzvf dokuwiki-stable-xxxxx.tgz`
-4. `mv dokuwiki-xxxxx wiki` (or any name you like)
-5. `sudo cp -r wiki /var/www/.`
-6. change some files ownership for the dokuwiki installer to work properly
-   - `sudo chown -R www-data data`
-   - `sudo chown www-data lib/plugins/`
-   - `sudo chown www-data conf`
-7. last, visit `projectname.org/<name-of-wiki-folder>/install.php` and follow the instructions
-8. `sudo rm install.php`
-9. setup [nice-urls](https://www.dokuwiki.org/install:apache) and [this htaccess rules](https://ada.adrianheine.de/dokuwiki-php-execution#solutions_in_the_configuration) to put in `/etc/apache2/apache2.conf`
-10. setup correct file permission [ref](https://www.howtoforge.com/tutorial/debian-dokuwiki-apache-installation/), make also `/var/www/wiki/conf/` writable by `www-data:root` (eg `sudo chown -R www-data:root`)
- 
-## folder structure
-
-``` 
-- opt/solr/
-- /var/solr/data/
-  - readin-fst
-  - name2gender
-- var/www/fst/
-- var/www/pad
-- var/www/wiki
-```
